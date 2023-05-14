@@ -8,6 +8,11 @@ def index():
     print(url_for('index'))#стартовая страница
     return render_template('index.html', menu=menu)
 
+@app.route('/profile/<path:username>')
+def profile(username):
+    return f'Пользователь: {username}'
+
+
 @app.route('/about')
 def about():
     print(url_for('about'))
@@ -15,3 +20,6 @@ def about():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+# with app.test_request_context():
+#     print(url_for('about'))
