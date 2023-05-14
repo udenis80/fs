@@ -50,7 +50,17 @@ h1{ /* Заголовок сайта */
   float: left; /* Размещаем слева от текста */
   margin: 5px 5px 0 0; /* Двигаются вверх-вправо-вниз-влево */
 }
+.error {
+	color: #D8000C;
+	background-color: #FFBABA;
+	background-image: url('https://i.imgur.com/GnyDvKN.png');
+}
 
+.warning {
+	color: #9F6000;
+	background-color: #FEEFB3;
+	background-image: url('https://i.imgur.com/Z8q7ww7.png');
+}
 /* Контент (статья) */
 
 #content{ /* Блок контента */
