@@ -5,7 +5,7 @@
     {% for msg in get_flashed_messages() %}
     <div>{{ msg }}</div>
     {% endfor %}
-<form action="{{url_for('addPost')}}" method="post" class="form-contact">
+<form action="{{url_for('addPost')}}" method="post">
     <p> <label> Название статьи: </label> <input type="text" name="name" value="" required />
     <p> <label> Текст статьи: </label>
     <p><textarea name="post" rows=7 cols=40></textarea>
