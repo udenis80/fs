@@ -38,30 +38,6 @@ h1{ /* Заголовок сайта */
 
 /* Сайдбар (колонка справа) */
 
-#sidebar{ /* Блок сайдбара */
-  background-color: #ffffff; /* Фон блока */
-  width: 180px; /* Ширина блока */
-  padding: 10px; /* Отступ текста от краёв */
-  float: right; /* Размещаем блок справа от других элементов, наплывание или обтекание справа). Если делать сайдбар слева, то значение right меняем на left */
-  border-radius: 5px; /* Закругляем углы блока */
-  box-shadow: rgba(0,0,0,0.5) 0px 1px 3px; /* Задаём блоку тень */
-}
-.marcer{ /* Галочки маркеры меню */
-  float: left; /* Размещаем слева от текста */
-  margin: 5px 5px 0 0; /* Двигаются вверх-вправо-вниз-влево */
-}
-.error {
-	color: #D8000C;
-	background-color: #FFBABA;
-	background-image: url('https://i.imgur.com/GnyDvKN.png');
-}
-
-.warning {
-	color: #9F6000;
-	background-color: #FEEFB3;
-	background-image: url('https://i.imgur.com/Z8q7ww7.png');
-}
-/* Контент (статья) */
 
 #content{ /* Блок контента */
   margin-bottom: 5px; /* Отступ блока статьи от блока подвала */
@@ -71,14 +47,7 @@ h1{ /* Заголовок сайта */
   border-radius: 5px;
   box-shadow: rgba(0,0,0,0.5) 0px 1px 3px;
 }
-.left{ /* Картинка в тексте слева */
-  float: left;
-  margin: 30px 7px 7px 7px;
-}
-.right{ /* Картинка в тексте справа */
-  float: right;
-  margin: 7px 0 7px 7px;
-}
+
 /* Подвал */
 
 #footer{ /* Блок подвала */
