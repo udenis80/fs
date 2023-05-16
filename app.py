@@ -1,15 +1,14 @@
-import g
 import os
 import sqlite3
 
-from flask import Flask, render_template, request, flash
+from flask import Flask, render_template, request, flash, abort, g
 
 from FDataBase import FDataBase
 
 #Конфигурация БД
 DATABASE = '/tmp/fs.db'
 DEBUS = True
-SECRET_KEY  = 'ksflaghk2jlfg4hfd43gjkh'
+SECRET_KEY = 'ksflaghk2jlfg4hfd43gjkh'
 
 
 app = Flask(__name__)
@@ -50,6 +49,7 @@ def index():
 def addPost():
     db = get_db()
     dbase = FDataBase(db)
+
     if request.method == 'POST':
         if len(request.form['name']) > 4 and len(request.form['post']) > 10:
             res = dbase.addPost(request.form['name'], request.form['post'])
