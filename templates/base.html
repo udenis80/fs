@@ -11,18 +11,19 @@
     {% endblock title %}
 </head>
 <body>
-    {% block content %}
-        {% block mainmenu %}
-            <ul>
-                <li><a href="{{ url_for('index') }}">Главная</a></li>
-                <li><a href="{{ url_for('addPost') }}">Добавление записи</a></li>
-            </ul>
-        {% endblock mainmenu %}
-        {% if title %}
-            <h1>{{ title }}</h1>
-        {% else %}
-                <h1> Про Фласк</h1>
-            {% endif %}
-    {% endblock content %}
+{% block content %}
+    {% block mainmenu %}
+        <ul>
+            {% for p in menu %}
+                <li><a href="{{ p.url }}">{{ p.title }}</a></li>
+            {% endfor %}
+        </ul>
+    {% endblock mainmenu %}
+    {% if title %}
+        <h1>{{ title }}</h1>
+    {% else %}
+        <h1> Про Фласк</h1>
+    {% endif %}
+{% endblock content %}
 </body>
 </html>
