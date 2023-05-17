@@ -1,7 +1,7 @@
 import os
 import sqlite3
 
-from flask import Flask, render_template, request, flash, abort, g
+from flask import Flask, render_template, request, flash, abort, g, make_response
 
 from FDataBase import FDataBase
 
@@ -71,6 +71,15 @@ def showPost(alias):
 
     return render_template('post.html', menu=dbase.getMenu(), title=title, post=post)
 
+@app.route('/login')
+def login():
+    log = ''
+    if request.cookies.get('logged'):
+        log = request.cookies.get('logged')
+
+    res = make_response(f'<h1>Форма авторизации</h1><p>logged: {log}')
+    res.set_cookie('logged', 'yes', 30*24*3600)
+    return res
 
 
 
