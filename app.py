@@ -81,7 +81,11 @@ def login():
     res.set_cookie('logged', 'yes', 30*24*3600)
     return res
 
-
+@app.route('/logout')
+def logout():
+    res = make_response('<p>Вы больше не авторизованы</p>')
+    res.set_cookie('logged', '', 0)
+    return res
 
 if __name__ == '__main__':
     app.run(debug=True)
