@@ -1,26 +1,29 @@
 import os
 import sqlite3
 
-from flask import Flask, render_template, request, flash, abort, g, make_response
+from flask import Flask, render_template, request, flash, abort, g, make_response, session
 
 from FDataBase import FDataBase
-
-#Конфигурация БД
-DATABASE = '/tmp/fs.db'
-DEBUS = True
-SECRET_KEY = 'ksflaghk2jlfg4hfd43gjkh'
-
 
 app = Flask(__name__)
 app.config.from_object(__name__)
 app.config.update(dict(DATABASE=os.path.join(app.root_path, 'fs.db')))
 
-def connect_db():
+#Конфигурация БД
+DATABASE = '/tmp/fs.db'
+DEBUG = True
+SECRET_KEY = 'ksflaghk2jlfg4hfd43gjkh'
+
+# Запустить из питон консоли
+# import os
+# os.urandom(20).hex()
+# Взять ключ и подставить в секрет кей
+def connect_db():  #Подключение к БД
     conn = sqlite3.connect(app.config['DATABASE'])
     conn.row_factory = sqlite3.Row
     return conn
 
-def create_db():
+def create_db():   #Создание БД
     db = connect_db()
     with app.open_resource('sq_db.sql', mode='r') as f:
         db.cursor().executescript(f.read())
@@ -33,7 +36,7 @@ def get_db():
         g.link_db = connect_db()
     return g.link_db
 
-@app.teardown_appcontext
+@app.teardown_appcontext    #Разрывает соединение с БД
 def close_db(error):
     '''Закрываем соединение с базой данных, если оно было установлено'''
     if hasattr(g, 'link_db'):
@@ -43,7 +46,19 @@ def close_db(error):
 def index():
     db = get_db()
     dbase = FDataBase(db)
-    return render_template('index.html', menu=dbase.getMenu(), posts = dbase.getPostsAnonce())
+    return render_template('index.html', menu=dbase.getMenu(), posts=dbase.getPostsAnonce())
+
+
+
+# @app.route('/')
+# def index():
+#     if 'visits' in session:
+#         session['visits'] = session.get('visits') + 1  #обновление данных сессии
+#     else:
+#         session['visits'] = 1 #Запись данных в сессию
+#
+#     return f"<h1>Main Page</h1><p>Число просмотров: {session['visits']}"
+
 
 @app.route('/add_post', methods=['POST', 'GET'])
 def addPost():
