@@ -18,6 +18,7 @@ SECRET_KEY = 'ksflaghk2jlfg4hfd43gjkh'
 # import os
 # os.urandom(20).hex()
 # Взять ключ и подставить в секрет кей
+
 def connect_db():  #Подключение к БД
     conn = sqlite3.connect(app.config['DATABASE'])
     conn.row_factory = sqlite3.Row
