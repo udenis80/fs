@@ -9,8 +9,7 @@ from UserLogin import UserLogin
 #Конфигурация БД
 DATABASE = '/tmp/fs.db'
 DEBUG = True
-# SECRET_KEY = 'ksflaghk2jlfg4hfd43gjkh'
-SECRET_KEY = 'd771f145545c97173f87113442b7dbc219a1e21c'
+SECRET_KEY = 'ksflaghk2jlfg4hfd43gjkh'
 
 
 # Запустить из питон консоли
