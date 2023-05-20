@@ -6,6 +6,17 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, login_user, login_required
 from UserLogin import UserLogin
 
+#Конфигурация БД
+DATABASE = '/tmp/fs.db'
+DEBUG = True
+# SECRET_KEY = 'ksflaghk2jlfg4hfd43gjkh'
+SECRET_KEY = 'd771f145545c97173f87113442b7dbc219a1e21c'
+
+
+# Запустить из питон консоли
+# import os
+# os.urandom(20).hex()
+# Взять ключ и подставить в секрет кей
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -17,18 +28,6 @@ login_manager = LoginManager(app)
 def load_user(user_id):
     print('load user')
     return UserLogin().fromDB(user_id, dbase)
-
-
-
-#Конфигурация БД
-DATABASE = '/tmp/fs.db'
-DEBUG = True
-SECRET_KEY = 'ksflaghk2jlfg4hfd43gjkh'
-
-# Запустить из питон консоли
-# import os
-# os.urandom(20).hex()
-# Взять ключ и подставить в секрет кей
 
 def connect_db():  #Подключение к БД
     conn = sqlite3.connect(app.config['DATABASE'])
@@ -91,8 +90,8 @@ def showPost(alias):
 
 @app.route('/login', methods=["POST", "GET"])
 def login():
-    if request.method =='POST':
-        user = dbase.getUserByEmail(request['email'])
+    if request.method =="POST":
+        user = dbase.getUserByEmail(request.form['email'])
         if user and check_password_hash(user['psw'], request.form['psw']):
             userLogin = UserLogin().create(user)
             login_user(userLogin)
@@ -105,6 +104,8 @@ def login():
 @app.route('/register', methods=["POST", "GET"])
 def register():
     if request.method == "POST":
+        session.pop('_flashes', None)
+
         if len(request.form['name']) > 4 and len(request.form['email']) > 4 \
                 and len(request.form['psw']) > 4 and request.form['psw'] == request.form['psw2']:
             hash = generate_password_hash(request.form['psw'])
