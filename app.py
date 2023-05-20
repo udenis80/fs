@@ -3,13 +3,22 @@ import sqlite3
 from flask import Flask, render_template, request, flash, abort, g, make_response, session, redirect, url_for
 from FDataBase import FDataBase
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import LoginManager
+from flask_login import LoginManager, login_user
+from UserLogin import UserLogin
+
 
 app = Flask(__name__)
 app.config.from_object(__name__)
 app.config.update(dict(DATABASE=os.path.join(app.root_path, 'fs.db')))
 
 login_manager = LoginManager(app)
+
+@login_manager.user_loader
+def load_user(user_id):
+    print('load user')
+    return UserLogin().fromDB(user_id, dbase)
+
+
 
 #Конфигурация БД
 DATABASE = '/tmp/fs.db'
@@ -91,8 +100,17 @@ def showPost(alias):
 
     return render_template('post.html', menu=dbase.getMenu(), title=title, post=post)
 
-@app.route('/login')
+@app.route('/login', methods=["POST", "GET"])
 def login():
+    if request.method =='POST':
+        user = dbase.getUserByEmail(request['email'])
+        if user and check_password_hash(user['psw'], request.form['psw']):
+            userLogin = UserLogin().create(user)
+            login_user(userLogin)
+            return redirect(url_for('index'))
+
+        flash('Неверный логин или пароль', 'error')
+
     return render_template('login.html', menu=dbase.getMenu(), title='Авторизация')
 
 @app.route('/register', methods=["POST", "GET"])
