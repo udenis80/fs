@@ -3,7 +3,7 @@ import sqlite3
 from flask import Flask, render_template, request, flash, abort, g, make_response, session, redirect, url_for
 from FDataBase import FDataBase
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import LoginManager, login_user
+from flask_login import LoginManager, login_user, login_required
 from UserLogin import UserLogin
 
 
@@ -93,6 +93,7 @@ def addPost():
     return render_template('add_post.html', menu=dbase.getMenu(), title='Добавление статьи')
 
 @app.route('/post/<alias>')
+@login_required
 def showPost(alias):
     title, post = dbase.getPost(alias)
     if not title:
