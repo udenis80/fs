@@ -3,10 +3,13 @@ import sqlite3
 from flask import Flask, render_template, request, flash, abort, g, make_response, session, redirect, url_for
 from FDataBase import FDataBase
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import LoginManager
 
 app = Flask(__name__)
 app.config.from_object(__name__)
 app.config.update(dict(DATABASE=os.path.join(app.root_path, 'fs.db')))
+
+login_manager = LoginManager(app)
 
 #Конфигурация БД
 DATABASE = '/tmp/fs.db'
