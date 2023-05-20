@@ -67,18 +67,6 @@ def close_db(error):
 def index():
     return render_template('index.html', menu=dbase.getMenu(), posts=dbase.getPostsAnonce())
 
-
-
-# @app.route('/')
-# def index():
-#     if 'visits' in session:
-#         session['visits'] = session.get('visits') + 1  #обновление данных сессии
-#     else:
-#         session['visits'] = 1 #Запись данных в сессию
-#
-#     return f"<h1>Main Page</h1><p>Число просмотров: {session['visits']}"
-
-
 @app.route('/add_post', methods=['POST', 'GET'])
 def addPost():
     if request.method == 'POST':
