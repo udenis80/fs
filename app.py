@@ -9,7 +9,7 @@ from UserLogin import UserLogin
 # конфигурация
 DATABASE = '/tmp/fs.db'
 DEBUG = True
-SECRET_KEY = 'ksflaghk2jlfg4hfd43gjkh'
+SECRET_KEY = '60ebd03cacbd8d66cc1783fd2b3297b566912c35'
 MAX_CONTENT_LENGTH = 1024 * 1024
 
 # Запустить из питон консоли
@@ -118,7 +118,7 @@ def login():
 @app.route("/register", methods=["POST", "GET"])
 def register():
     if request.method == "POST":
-        if len(request.form['name']) > 4 and len(request.form['email']) > 4 \
+        if len(request.form['name']) >= 4 and len(request.form['email']) >= 4 \
             and len(request.form['psw']) > 4 and request.form['psw'] == request.form['psw2']:
             hash = generate_password_hash(request.form['psw'])
             res = dbase.addUser(request.form['name'], request.form['email'], hash)
