@@ -22,6 +22,11 @@ app.config.from_object(__name__)
 app.config.update(dict(DATABASE=os.path.join(app.root_path, 'fs.db')))
 
 login_manager = LoginManager(app)
+login_manager.login_view = 'login'
+login_manager.login_message = 'Авторизуйтесь для доступа к закрытым страницам'
+login_manager.login_message_category = 'success'
+
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -87,18 +92,6 @@ def showPost(alias):
     return render_template('post.html', menu=dbase.getMenu(), title=title, post=post)
 
 
-@app.route("/login", methods=["POST", "GET"])
-def login():
-    if request.method == "POST":
-        user = dbase.getUserByEmail(request.form['email'])
-        if user and check_password_hash(user['psw'], request.form['psw']):
-            userlogin = UserLogin().create(user)
-            login_user(userlogin)
-            return redirect(url_for('index'))
-
-        flash("Неверная пара логин/пароль", "error")
-
-    return render_template("login.html", menu=dbase.getMenu(), title="Авторизация")
 
 @app.route('/register', methods=["POST", "GET"])
 def register():
@@ -117,13 +110,25 @@ def register():
 
     return render_template("register.html", menu=dbase.getMenu(), title="Регистрация")
 
-# @app.route('/logout')
-# def logout():
-#     res = make_response('<p>Вы больше не авторизованы</p>')
-#     res.set_cookie('logged', '', 0)
-#     return res
+@app.route("/login", methods=["POST", "GET"])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('profile'))
+
+    if request.method == "POST":
+        user = dbase.getUserByEmail(request.form["email"])
+        if user and check_password_hash(user['psw'], request.form['psw']):
+            userlogin = UserLogin().create(user)
+            rm = True if request.form.get('remainme') else False
+            login_user(userlogin, remember=rm)
+            return redirect(request.args.get('next') or url_for('profile'))
+
+        flash("Неверная пара логин/пароль", "error")
+
+    return render_template("login.html", menu=dbase.getMenu(), title="Авторизация")
 
 @app.route('/logout')
+@login_required
 def logout():
     logout_user()
     flash('Вы вышли из аккаунта', 'success')
