@@ -10,7 +10,7 @@ from UserLogin import UserLogin
 DATABASE = '/tmp/fs.db'
 DEBUG = True
 SECRET_KEY = 'ksflaghk2jlfg4hfd43gjkh'
-
+MAX_CONTENT_LENGTH = 1024 * 1024
 
 # Запустить из питон консоли
 # import os
@@ -91,7 +91,22 @@ def showPost(alias):
 
     return render_template('post.html', menu=dbase.getMenu(), title=title, post=post)
 
+@app.route("/login", methods=["POST", "GET"])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('profile'))
 
+    if request.method == "POST":
+        user = dbase.getUserByEmail(request.form["email"])
+        if user and check_password_hash(user['psw'], request.form['psw']):
+            userlogin = UserLogin().create(user)
+            rm = True if request.form.get('remainme') else False
+            login_user(userlogin, remember=rm)
+            return redirect(request.args.get('next') or url_for('profile'))
+
+        flash("Неверная пара логин/пароль", "error")
+
+    return render_template("login.html", menu=dbase.getMenu(), title="Авторизация")
 
 @app.route('/register', methods=["POST", "GET"])
 def register():
@@ -110,23 +125,6 @@ def register():
 
     return render_template("register.html", menu=dbase.getMenu(), title="Регистрация")
 
-@app.route("/login", methods=["POST", "GET"])
-def login():
-    if current_user.is_authenticated:
-        return redirect(url_for('profile'))
-
-    if request.method == "POST":
-        user = dbase.getUserByEmail(request.form["email"])
-        if user and check_password_hash(user['psw'], request.form['psw']):
-            userlogin = UserLogin().create(user)
-            rm = True if request.form.get('remainme') else False
-            login_user(userlogin, remember=rm)
-            return redirect(request.args.get('next') or url_for('profile'))
-
-        flash("Неверная пара логин/пароль", "error")
-
-    return render_template("login.html", menu=dbase.getMenu(), title="Авторизация")
-
 @app.route('/logout')
 @login_required
 def logout():
@@ -137,8 +135,7 @@ def logout():
 @app.route('/profile')
 @login_required
 def profile():
-    return f""""<p><a href='{url_for('logout')}"> Выйти из профиля  </a>
-                <p> user info: {current_user.get_id()}"""
+    return render_template("profile.html", menu=dbase.getMenu(), title='Профиль')
 
 if __name__ == '__main__':
     app.run(debug=True)
