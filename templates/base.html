@@ -1,29 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link type="text/css" href="{{ url_for('static', filename='css/styles.css' ) }}" rel="stylesheet"/>
-    {% block title %}
-        {% if title %}
-            <title>про Фласк - {{ title }}</title>
-        {% else %}
-            <title>Про Фласк</title>
-        {% endif %}
-    {% endblock title %}
+<link type="text/css" href="{{ url_for('static', filename='css/styles.css')}}" rel="stylesheet" />
+{% block title -%}
+{% if title %}
+	<title>Про Flask - {{title}}</title>
+{% else %}
+	<title>Про Flask</title>
+{% endif %}
+{% endblock %}
 </head>
 <body>
-{% block content %}
-    {% block mainmenu %}
-        <ul>
-            {% for p in menu %}
-                <li><a href="{{ p.url }}">{{ p.title }}</a></li>
-            {% endfor %}
-        </ul>
-    {% endblock mainmenu %}
-    {% if title %}
-        <h1>{{ title }}</h1>
-    {% else %}
-        <h1> Про Фласк</h1>
-    {% endif %}
-{% endblock content %}
+{% block content -%}
+	{%- block mainmenu -%}
+<ul class="mainmenu">
+{% for p in menu %}
+<li><a href="{{p.url}}">{{p.title}}</a></li>
+{% endfor %}
+</ul>
+	{% endblock mainmenu -%}
+<div class="clear"></div>
+<div class="content">
+	{% if title -%}
+<h1>{{title}}</h1>
+	{% else -%}
+<h1>Про Flask</h1>
+	{% endif -%}
+{% endblock -%}
+</div>
 </body>
 </html>
