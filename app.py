@@ -89,7 +89,7 @@ def addPost():
         else:
             flash('Ошибка добавления статьи', category='error')
 
-    return render_template('add_post.html', menu = dbase.getMenu(), title="Добавление статьи")
+    return render_template('add_post.html', menu=dbase.getMenu(), title="Добавление статьи")
 
 
 @app.route("/post/<alias>")
@@ -116,11 +116,6 @@ def login():
 
         flash("Неверная пара логин/пароль", "error")
     return render_template("login.html", menu=dbase.getMenu(), title="Авторизация", form=form)
-
-    # if request.method == "POST":
-
-    #
-    # return render_template("login.html", menu=dbase.getMenu(), title="Авторизация")
 
 
 @app.route("/register", methods=["POST", "GET"])
