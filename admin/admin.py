@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, flash, redirect, url_for, request, session
+from flask import Blueprint, render_template, flash, redirect, url_for, request, session, g
 
 admin = Blueprint('admin', __name__, template_folder='templates', static_folder='static')
 
@@ -13,6 +13,21 @@ def logout_admin():
 
 menu = [{'url': '.index', 'title': 'Панель'},
         {'url': '.logout', 'title': 'Выйти'}]
+
+db = None
+@admin.before_request
+def before_request():
+    '''Установка соедниения с базой данных'''
+    global db
+    db = g.get('link_db')
+
+@admin.teardown_request
+def teardown_request():
+    global db
+    db = None
+    return request
+
+
 
 @admin.route('/')
 def index():
